@@ -1,4 +1,6 @@
 # client
+## Link Deploy
+https://new-kanban-2f637.firebaseapp.com
 
 ## Project setup
 ```

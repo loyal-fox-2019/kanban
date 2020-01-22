@@ -12,7 +12,8 @@
     "bootstrap-vue": "^2.2.2",
     "core-js": "^3.4.4",
     "firebase": "^7.7.0",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-sweetalert2": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.0",

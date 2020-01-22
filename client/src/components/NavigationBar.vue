@@ -98,7 +98,11 @@ export default {
           this.form.assignTo = ''
         })
         .catch(err => {
-          console.log(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     },
     onReset () {

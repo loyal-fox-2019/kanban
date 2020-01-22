@@ -13,53 +13,41 @@
         <b-spinner label="Loading..."></b-spinner>
       </div>
     </b-modal>
-
     <b-modal :id="sendTask.id" centered title="BootstrapVue" hide-footer>
       <b-form>
         <b-form>
           <b-form-group id="input-group-1" label="Task Title:" label-for="input-1">
             <label>{{ sendTask.title }}</label>
           </b-form-group>
-
           <b-form-group id="input-group-2" label="Task Description:" label-for="input-2">
             <label>{{ sendTask.description }}</label>
           </b-form-group>
-
           <b-form-group id="input-group-3" label="Point:" label-for="input-3">
             <label>{{ sendTask.point }}</label>
           </b-form-group>
-
           <b-form-group id="input-group-3" label="Assign To:" label-for="input-3">
             <label>{{ sendTask.assignTo }}</label>
           </b-form-group>
-
           <div class="button-wrapper">
-
             <b-button
               v-if="sendTask.status === 'todo'"
               @click="swapBacklog(sendTask.id)"
               variant="outline-danger"
             >Backlog</b-button>
-
             <b-button
               v-if="sendTask.status === 'backlog' || sendTask.status === 'doing'"
               @click="swapTodo(sendTask.id)"
               variant="outline-warning"
             >Todo</b-button>
-
             <b-button @click="deleteTask(sendTask.id)" variant="danger">Delete</b-button>
-
             <b-button
               v-if="sendTask.status === 'todo' || sendTask.status === 'done'"
               @click="swapDoing(sendTask.id)"
               variant="outline-info"
             >Doing</b-button>
-
             <b-button v-if="sendTask.status === 'doing'" @click="swapDone(sendTask.id)" variant="outline-success">Done</b-button>
           </div>
-
         </b-form>
-
       </b-form>
     </b-modal>
   </div>
@@ -69,7 +57,6 @@ import db from '../../config/firebase'
 export default {
   data () {
     return {
-
     }
   },
   props: {
@@ -93,7 +80,11 @@ export default {
           this.$bvModal.hide('modal-loading')
         })
         .catch(err => {
-          console.log(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     },
     swapTodo (id) {
@@ -108,7 +99,11 @@ export default {
           this.$bvModal.hide('modal-loading')
         })
         .catch(err => {
-          console.log(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     },
     swapDoing (id) {
@@ -123,7 +118,11 @@ export default {
           this.$bvModal.hide('modal-loading')
         })
         .catch(err => {
-          console.log(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     },
     swapDone (id) {
@@ -138,7 +137,11 @@ export default {
           this.$bvModal.hide('modal-loading')
         })
         .catch(err => {
-          console.log(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     },
     deleteTask (id) {
@@ -151,7 +154,11 @@ export default {
           this.$bvModal.hide('modal-loading')
         })
         .catch(function (err) {
-          console.error(err)
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.message
+          })
         })
     }
   }
