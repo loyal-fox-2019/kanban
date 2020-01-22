@@ -11,7 +11,7 @@ export default {
   name: 'app',
   data () {
     return {
-      data: [
+      dataTask: [
         {
           title: 'Backlog',
           color: 'danger',
@@ -38,23 +38,23 @@ export default {
   methods: {
     getData () {
       db.collection('kanban').onSnapshot(querySnapshot => {
-        this.dataBacklog.tasks = []
-        this.dataTodo.tasks = []
-        this.dataDoing.tasks = []
-        this.dataDone.tasks = []
+        this.dataTask[0].tasks = []
+        this.dataTask[1].tasks = []
+        this.dataTask[2].tasks = []
+        this.dataTask[3].tasks = []
 
         querySnapshot.forEach(doc => {
           if (doc.data().status === 'backlog') {
-            this.dataBacklog.tasks.push({ id: doc.id, ...doc.data() })
+            this.dataTask[0].tasks.push({ id: doc.id, ...doc.data() })
           }
           if (doc.data().status === 'todo') {
-            this.dataTodo.tasks.push({ id: doc.id, ...doc.data() })
+            this.dataTask[1].tasks.push({ id: doc.id, ...doc.data() })
           }
           if (doc.data().status === 'doing') {
-            this.dataDoing.tasks.push({ id: doc.id, ...doc.data() })
+            this.dataTask[2].tasks.push({ id: doc.id, ...doc.data() })
           }
           if (doc.data().status === 'done') {
-            this.dataDone.tasks.push({ id: doc.id, ...doc.data() })
+            this.dataTask[3].tasks.push({ id: doc.id, ...doc.data() })
           }
         })
       })
