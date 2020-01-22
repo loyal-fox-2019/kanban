@@ -22,9 +22,9 @@
                     <p>{{ oneTodo.assigned }}</p>
                 </div>
                 <div>
-                    <!-- <b-button variant="warning" v-on:click="goBack(`${oneTodo.status}`)">Warning</b-button>
-                    <b-button variant="danger" v-on:click="deleteTodo(`${oneTodo.status}`)">Delete</b-button>
-                    <b-button variant="success" v-on:click="forward(`${oneTodo.status}`)">Success</b-button> -->
+                    <b-button variant="warning" v-on:click="goBack(oneTodo)" v-if="oneTodo.status!=='backlog'">Back</b-button>
+                    <b-button variant="danger" v-on:click="deleteTodo(oneTodo)">Delete</b-button>
+                    <b-button variant="success" v-on:click="forward(oneTodo)" v-if="oneTodo.status!=='done'">Forward</b-button>
                 </div>
             </b-modal>
         </div>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-// import db from '../config/firebase'
+import db from '../config/firebase'
 export default {
     name: 'todo',
     props: ['oneTodo','id'],
@@ -44,15 +44,70 @@ export default {
         }
     },
     methods:{
-        // goBack(status){
+        goBack(todo){
+            const sfDocRef = db.collection("kanban").doc(todo.id)
+            return db.runTransaction(function(transaction) {
+                return transaction.get(sfDocRef).then(function(sfDoc) {
+                    if (!sfDoc.exists) {
+                        throw "Document does not exist!";
+                    }
+                    let newStatus = null
+                    switch (sfDocRef.status){
+                        case 'todo':
+                            newStatus = 'backlog'
+                            break;
+                        case 'doing':
+                            newStatus = 'todo'
+                            break;
+                        case 'done':
+                            newStatus = 'doing'
+                            break
+                    }
+                    transaction.update(sfDocRef, { status: newStatus });
+                });
+            }).then(function() {
+                console.log("Transaction successfully committed!");
+            }).catch(function(error) {
+                console.log("Transaction failed: ", error);
+            });
 
-        // },
-        // forward(status){
-
-        // },
-        // deleteTodo(status){
-
-        // }
+        },
+        forward(status){
+            const sfDocRef = db.collection("kanban").doc(todo.id)
+            return db.runTransaction(function(transaction) {
+                return transaction.get(sfDocRef).then(function(sfDoc) {
+                    if (!sfDoc.exists) {
+                        throw "Document does not exist!";
+                    }
+                    let newStatus = null
+                    switch (sfDocRef.status){
+                        case 'backlog':
+                            newStatus = 'todo'
+                            break
+                        case 'todo':
+                            newStatus = 'doing'
+                            break;
+                        case 'doing':
+                            newStatus = 'done'
+                            break;
+                    }
+                    transaction.update(sfDocRef, { status: newStatus });
+                });
+            }).then(function() {
+                console.log("Transaction successfully committed!");
+            }).catch(function(error) {
+                console.log("Transaction failed: ", error);
+            });
+        },
+        deleteTodo(todo){
+            db.collection('kanban').doc(todo.id).delete()
+            .then(()=>{
+                console.log('delete document successful')
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
     }
 }
 </script>
