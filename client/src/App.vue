@@ -39,6 +39,7 @@
 
 import Header from './components/Header.vue';
 import KanbanBin from './components/KanbanBin.vue';
+import db from './config/firebase';
 
 export default {
   name: 'app',
@@ -48,16 +49,7 @@ export default {
   },
   data() {
     return {
-      allTask: [
-        {
-          id: 1,
-          status: 0,
-          title: 'Login Feature',
-          description: `user should have option to login manually (with standard email and password) or to login using google account`,
-          point: 213,
-          assignedTo: `Markus`
-        }
-      ]
+      allTask: []
     };
   },
   computed: {
@@ -77,11 +69,28 @@ export default {
   methods: {
     onAddNewTask(newTask) {
       console.log(newTask);
-      this.allTask.push({ ...newTask, status: 0, id: this.allTask.length + 1 });
+      db.collection('tasks')
+        .add({ ...newTask, status: 0 })
+        .then(docRef => {
+          console.log('Document written with ID: ', docRef.id);
+        })
+        .catch(error => {
+          console.error('Error adding document: ', error);
+        });
     }
+  },
+  created() {
+    console.log(db);
+    db.collection('tasks').onSnapshot(querySnapshot => {
+      this.allTask = [];
+      querySnapshot.forEach(doc => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, ' => ', doc.data());
+        this.allTask.push(doc.data());
+      });
+    });
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>
