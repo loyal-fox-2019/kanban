@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar :showTask="showTask" @toggleShowColumn="toggleShowColumn"></navbar>
+    <navbar @toggleShowColumn="toggleShowColumn"></navbar>
     <div class="columns">
       <column id="backlog" :categoryName="'backlog'" :searchStr="searchStr" v-if="showTask.backlog"></column>
       <column id="todo" :categoryName="'todo'" :searchStr="searchStr" v-if="showTask.todo"></column>

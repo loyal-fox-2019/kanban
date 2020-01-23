@@ -1,27 +1,15 @@
 <template>
     <div>
-        <div class="category-header"><h2>{{categoryName}}</h2></div>
+        <div class="category-header"><h2><i>{{categoryName}}</i></h2></div>
         <div class="task-column">
+            <div v-if="loading" class="loading"><img src="../../public/Fire3D.gif" width="30" height="30" alt="">Loading...</div>
             <taskcard v-for="task in tasks" :key="task.id" :task="task"></taskcard>
         </div>
     </div>
 </template>
 
 <script>
-    import firebase from 'firebase';
-    import 'firebase/firestore';
-    const firebaseConfig = {
-        apiKey: "AIzaSyDjU8ffKV72f2lMBiuLmolPWTAxyVPPyAM",
-        authDomain: "kanban-on-fire.firebaseapp.com",
-        databaseURL: "https://kanban-on-fire.firebaseio.com",
-        projectId: "kanban-on-fire",
-        storageBucket: "kanban-on-fire.appspot.com",
-        messagingSenderId: "700513586872",
-        appId: "1:700513586872:web:beedbbf09d3877782dee4d"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
+    import db from "../config/firebase.js";
     import taskcard from "./taskcard.vue";
 
     export default {
@@ -32,13 +20,16 @@
         },
         data() {
             return {
-                tasks: []
+                tasks: [],
+                loading: true
             }
         },
         created() {
             db.collection("tasks")
             .where("category","==",this.categoryName)
+            //.orderBy("created_date")
             .onSnapshot((querySnapshot) => {
+                this.tasks = [];
                 querySnapshot.forEach((doc) => {
                     let t = {
                         id: doc.id,
@@ -46,6 +37,7 @@
                     }
                     this.tasks.push(t);
                 });
+                this.loading = false;
             });
         },
         components: {
@@ -65,6 +57,10 @@
     border: 1px solid blue;
 }
 .category-header {
+    text-align: center;
+}
+.loading {
+    margin-top: 50%;
     text-align: center;
 }
 </style>
