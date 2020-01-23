@@ -3,16 +3,25 @@
     <b-card :header="task.title" align="center">
       <b-table stacked :items="[taskDetailOnCard]"></b-table>
       <b-button-group>
-        <b-button variant="primary">
+        <b-button @click="goToPrevBin" variant="primary">
           <b-icon icon="chevron-left"></b-icon>
         </b-button>
-        <b-button @click="deleteTask" variant="danger">
-          <b-icon icon="trash"></b-icon>
+        <b-button v-b-modal="task.id" variant="primary">
+          <b-icon icon="justify"></b-icon>
         </b-button>
-        <b-button variant="primary">
+        <b-button @click="goToNextBin" variant="primary">
           <b-icon icon="chevron-right"></b-icon>
         </b-button>
       </b-button-group>
+
+      <!-- MODAL -->
+      <b-modal :id="task.id" title="Task Detail" centered hide-footer>
+        <b-table stacked :items="[taskDetailonModal]"></b-table>
+        <div class="d-flex flex-row-reverse">
+          <b-button variant="danger"><b-icon icon="trash"></b-icon></b-button>
+        </div>
+      </b-modal>
+
       <!-- <b-card-text> <b>Description</b> </b-card-text>
       <b-card-text> {{ task.description }} </b-card-text> -->
     </b-card>
@@ -30,7 +39,13 @@ export default {
   computed: {
     taskDetailOnCard() {
       return { point: this.task.point, assignedTo: this.task.assignedTo };
-      // return {};
+    },
+    taskDetailonModal() {
+      return {
+        point: this.task.point,
+        assignedTo: this.task.assignedTo,
+        description: this.task.description
+      };
     }
   },
   methods: {
@@ -44,8 +59,32 @@ export default {
         .catch(error => {
           console.error('Error removing document: ', error);
         });
-
-      // console.log(this.task.id);
+    },
+    goToNextBin() {
+      db.collection('tasks')
+        .doc(this.task.id)
+        .update({
+          status: this.task.status + 1
+        })
+        .then(() => {
+          console.log('Document successfully updated!');
+        })
+        .catch(error => {
+          console.error('Error updating document: ', error);
+        });
+    },
+    goToPrevBin() {
+      db.collection('tasks')
+        .doc(this.task.id)
+        .update({
+          status: this.task.status - 1
+        })
+        .then(() => {
+          console.log('Document successfully updated!');
+        })
+        .catch(error => {
+          console.error('Error updating document: ', error);
+        });
     }
   }
 };
