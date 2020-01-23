@@ -96,9 +96,9 @@ export default {
   methods: {
     logout () {
       firebase.auth().signOut()
-        .then(() => {
-          this.$router.push('/login')
-        })
+      // .then(() => {
+      //   this.$router.push('/login')
+      // })
     },
     add () {
       let db = firebase.firestore()
@@ -112,7 +112,6 @@ export default {
           this.title = ''
           this.desc = ''
         })
-      console.log(this.title, this.desc)
     }
   },
   mounted () {
