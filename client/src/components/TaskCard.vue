@@ -5,7 +5,7 @@
         <!-- modal -->
         <b-button @click="$bvModal.show(`modal-${forTaskCard.id}`)">Show Detail</b-button>
 
-        <b-modal :id="'modal-'+forTaskCard.id" :title="forTaskCard.title" hide-footer>
+        <b-modal :id="'modal-'+forTaskCard.id" :title="forTaskCard.title+':'+forTaskCard.assigned" hide-footer>
             <p>Task Description:</p>
             <p>{{forTaskCard.description}}</p>
             <p>Point:</p>
@@ -13,13 +13,48 @@
             <p>Status:</p>
             <p>{{forTaskCard.status}}</p>
             <b-row align-h="around">
-            <b-button variant="warning" v-if="forTaskCard.status=='To-Do'" @click="prevBack(forTaskCard.id)">Back-Log</b-button>
-            <b-button variant="warning" v-if="forTaskCard.status=='Doing'" @click="toTodo(forTaskCard.id)">To-Do</b-button>
-            <b-button variant="warning" v-if="forTaskCard.status=='Done'" @click="toDoing(forTaskCard.id)">Doing</b-button>
-            <b-button variant="danger" @click="deleteTask(forTaskCard.id)">Delete</b-button>
-            <b-button variant="success" v-if="forTaskCard.status=='Back-Log'" @click="toTodo(forTaskCard.id)">To-Do</b-button>
-            <b-button variant="success" v-if="forTaskCard.status=='To-Do'" @click="toDoing(forTaskCard.id)">Doing</b-button>
-            <b-button variant="success" v-if="forTaskCard.status=='Doing'" @click="nextDone(forTaskCard.id)">Done</b-button>
+            <b-button variant="warning" id="toBack" v-if="forTaskCard.status=='To-Do'">Back-Log</b-button>
+            <b-popover target="toBack" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="prevBack(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
+            <b-button variant="warning" id="toTodo" v-if="forTaskCard.status=='Doing'">To-Do</b-button>
+            <b-popover target="toTodo" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="toTodo(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
+            <b-button variant="warning" id="toDoingPop" v-if="forTaskCard.status=='Done'">Doing</b-button>
+            <b-popover target="toDoingPop" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="toDoing(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
+            <b-button variant="danger" id="deletePop">Delete</b-button>
+            <b-popover target="deletePop" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="danger" @click="deleteTask(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="primary">no</b-button>
+            </b-popover>
+            <b-button variant="success" id="nextTodo" v-if="forTaskCard.status=='Back-Log'">To-Do</b-button>
+            <b-popover target="nextTodo" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="toTodo(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
+            <b-button variant="success" id="nextDoing" v-if="forTaskCard.status=='To-Do'">Doing</b-button>
+            <b-popover target="nextDoing" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="toDoing(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
+            <b-button variant="success" id="toDone" v-if="forTaskCard.status=='Doing'">Done</b-button>
+            <b-popover target="toDone" triggers="click" placement="top">
+              <template v-slot:title>Are You Sure?</template>
+              <b-button class="mx-1" variant="primary" @click="nextDone(forTaskCard.id)">yes</b-button>
+              <b-button @click="closePop" variant="danger">no</b-button>
+            </b-popover>
             </b-row>
         </b-modal>
   <!-- modal -->
@@ -38,27 +73,34 @@ export default {
       db.collection('tasks').doc(id).update({
         status: 'To-Do'
       })
+      this.$bvModal.hide(`modal-${id}`)
     },
     toDoing (id) {
       db.collection('tasks').doc(id).update({
         status: 'Doing'
       })
+      this.$bvModal.hide(`modal-${id}`)
     },
     nextDone (id) {
       db.collection('tasks').doc(id).update({
         status: 'Done'
       })
+      this.$bvModal.hide(`modal-${id}`)
     },
     prevBack (id) {
       db.collection('tasks').doc(id).update({
         status: 'Back-Log'
       })
+      this.$bvModal.hide(`modal-${id}`)
     },
     deleteTask (id) {
       db.collection('tasks').doc(id).delete()
         .then(() => {
-          console.log('Deleted')
+          this.$root.$emit('bv::hide::popover')
         })
+    },
+    closePop () {
+      this.$root.$emit('bv::hide::popover')
     }
   }
 }
