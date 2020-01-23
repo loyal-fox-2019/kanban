@@ -81,13 +81,7 @@ export default {
     hapus() {
       db.collection("kanban")
         .doc(this.perActivity.id)
-        .delete()
-        .then(function() {
-          console.log("successfully deleted");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+        .delete();
     }
   },
   computed: {
