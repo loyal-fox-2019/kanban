@@ -1,32 +1,32 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <router-view/>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<script>
+import firebase from 'firebase'
+export default {
+  name: 'App',
+  created () {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        // User is signed in.
+        // var displayName = user.displayName
+        // var email = user.email
+        // var emailVerified = user.emailVerified
+        // var photoURL = user.photoURL
+        // var isAnonymous = user.isAnonymous
+        // var uid = user.uid
+        // var providerData = user.providerData
+        // console.log('KALAU DI THEN, TETEP MASUK SINI GA? ternyata tetep masuk')
+        // fetch data
+        localStorage.setItem('userId', user.uid)
+        // this.$router.push('/')
+      } else {
+        // User is signed out.
+        // ...
+        console.log('User signed out')
+      }
+    })
   }
 }
-</style>
+</script>
