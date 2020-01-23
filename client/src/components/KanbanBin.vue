@@ -3,21 +3,27 @@
     <h1>{{ nameBinType }}</h1>
     <b-list-group>
       <b-list-group-item v-for="task in tasks" :key="task.id">
-        <b-card :header="task.title">
+        <KanbanCard :task="task"></KanbanCard>
+        <!-- <b-card :header="task.title">
           <b-card-text> <b>Description</b> </b-card-text>
           <b-card-text> {{ task.description }} </b-card-text>
-        </b-card>
+        </b-card> -->
       </b-list-group-item>
     </b-list-group>
   </div>
 </template>
 
 <script>
+import KanbanCard from './KanbanCard.vue';
+
 export default {
   name: 'KanbanBin',
   props: {
     binType: Number,
     tasks: Array
+  },
+  components: {
+    KanbanCard
   },
   computed: {
     nameBinType() {

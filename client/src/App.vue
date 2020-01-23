@@ -86,7 +86,7 @@ export default {
       querySnapshot.forEach(doc => {
         // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, ' => ', doc.data());
-        this.allTask.push(doc.data());
+        this.allTask.push({ ...doc.data(), id: doc.id });
       });
     });
   }
