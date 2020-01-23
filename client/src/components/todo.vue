@@ -22,9 +22,9 @@
                     <p>{{ oneTodo.assigned }}</p>
                 </div>
                 <div>
-                    <b-button variant="warning" v-on:click="goBack(oneTodo)" v-if="oneTodo.status!=='backlog'">Back</b-button>
-                    <b-button variant="danger" v-on:click="deleteTodo(oneTodo)">Delete</b-button>
-                    <b-button variant="success" v-on:click="forward(oneTodo)" v-if="oneTodo.status!=='done'">Forward</b-button>
+                    <b-button variant="warning" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="goBack(oneTodo)" v-show="oneTodo.status!=='backlog'">Back</b-button>
+                    <b-button variant="danger"  @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="deleteTodo(oneTodo)">Delete</b-button>
+                    <b-button variant="success" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="forward(oneTodo)" v-show="oneTodo.status!=='done'">Forward</b-button>
                 </div>
             </b-modal>
         </div>
@@ -44,60 +44,59 @@ export default {
         }
     },
     methods:{
+        showAlertGood() {
+                // Use sweetalert2
+                this.$swal('Great Job, Keep it up!!');
+            },
+        showAlertBad() {
+                // Use sweetalert2
+                this.$swal("Let's Get Back To Work");
+            },
         goBack(todo){
-            const sfDocRef = db.collection("kanban").doc(todo.id)
-            return db.runTransaction(function(transaction) {
-                return transaction.get(sfDocRef).then(function(sfDoc) {
-                    if (!sfDoc.exists) {
-                        throw "Document does not exist!";
-                    }
-                    let newStatus = null
-                    switch (sfDocRef.status){
-                        case 'todo':
-                            newStatus = 'backlog'
-                            break;
-                        case 'doing':
-                            newStatus = 'todo'
-                            break;
-                        case 'done':
-                            newStatus = 'doing'
-                            break
-                    }
-                    transaction.update(sfDocRef, { status: newStatus });
-                });
-            }).then(function() {
-                console.log("Transaction successfully committed!");
-            }).catch(function(error) {
-                console.log("Transaction failed: ", error);
-            });
+            let newStatus = null
+                switch (todo.status){
+                    case 'done':
+                        newStatus = 'doing'
+                        break
+                    case 'doing':
+                        newStatus = 'todo'
+                        break;
+                    case 'todo':
+                        newStatus = 'backlog'
+                        break;
+                    case 'backlog':
+                        newStatus = 'backlog'
+                        break;
+                }
+            db.collection('kanban').doc(todo.id).update({status: newStatus})
+            .then(()=>{
+                this.showAlertBad()
+                console.log('successfully updated')
+            })
 
         },
-        forward(status){
-            const sfDocRef = db.collection("kanban").doc(todo.id)
-            return db.runTransaction(function(transaction) {
-                return transaction.get(sfDocRef).then(function(sfDoc) {
-                    if (!sfDoc.exists) {
-                        throw "Document does not exist!";
-                    }
-                    let newStatus = null
-                    switch (sfDocRef.status){
-                        case 'backlog':
-                            newStatus = 'todo'
-                            break
-                        case 'todo':
-                            newStatus = 'doing'
-                            break;
-                        case 'doing':
-                            newStatus = 'done'
-                            break;
-                    }
-                    transaction.update(sfDocRef, { status: newStatus });
-                });
-            }).then(function() {
-                console.log("Transaction successfully committed!");
-            }).catch(function(error) {
-                console.log("Transaction failed: ", error);
-            });
+        forward(todo){
+            let newStatus = null
+                switch (todo.status){
+                    case 'backlog':
+                        newStatus = 'todo'
+                        break
+                    case 'todo':
+                        newStatus = 'doing'
+                        break;
+                    case 'doing':
+                        newStatus = 'done'
+                        break;
+                    case 'done': 
+                        newStatus = 'done'
+                        break;
+                }
+                console.log(newStatus)
+            db.collection('kanban').doc(todo.id).update({status: newStatus})
+            .then(()=>{
+                 this.showAlertGood()
+                console.log('successfully updated')
+            })
         },
         deleteTodo(todo){
             db.collection('kanban').doc(todo.id).delete()

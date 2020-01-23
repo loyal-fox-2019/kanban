@@ -3,7 +3,7 @@ const firebase = require('firebase');
 require("firebase/firestore");
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAlMOaR9guk_vX2505tuM9DrJylS6FZqGw",
+  apiKey: process.env.VUE_APP_FIRESTORE,
   authDomain: "kanban-7617d.firebaseapp.com",
   databaseURL: "https://kanban-7617d.firebaseio.com",
   projectId: "kanban-7617d",

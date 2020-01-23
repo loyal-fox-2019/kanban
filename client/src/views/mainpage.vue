@@ -3,9 +3,9 @@
         <navbar></navbar>
         <div class="row">
             <notes class="col-md" :data="backlog" :cat="`Back Log`"></notes>
-            <notes class="col-md" :data="doing" :cat="`To-Do`"></notes>
-            <notes class="col-md" :data="done" :cat="`Doing`"></notes>
-            <notes class="col-md" :data="todo" :cat="`Done`"></notes>
+            <notes class="col-md" :data="todo" :cat="`To-Do`"></notes>
+            <notes class="col-md" :data="doing" :cat="`Doing`"></notes>
+            <notes class="col-md" :data="done"  :cat="`Done`"></notes>
         </div>
     </div>
 </template>
@@ -63,7 +63,7 @@ export default {
                     listDone.push({
                         id: todoId,
                         ...todo})
-                }else{
+                }else if(todo.status=='todo'){
                     listTodo.push({
                         id: todoId,
                         ...todo})
