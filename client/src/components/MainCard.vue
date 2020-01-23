@@ -77,7 +77,6 @@ export default {
     mainStat: {
       deep: true,
       handler: (val, oldVal) => {
-        console.log(val)
         val.forEach(element => {
           if (element.list.length !== 0) {
             element.list.forEach(task => {
