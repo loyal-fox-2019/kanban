@@ -44,6 +44,7 @@
 
 <script>
 import db from '../config/firebase-config'
+import Swal from 'sweetalert2'
 export default {
     name: "mini-card",
     data(){
@@ -126,10 +127,18 @@ export default {
         del: function(){
             db.collection("kanban").doc(this.indivData.id).delete()
             .then(()=>{
-                console.log("delete success");            
+                Swal.fire(
+                    'Success!',
+                    'File deleted!',
+                    'success'
+                )         
             })
-            .catch(err=>{
-                console.log(err);
+            .catch(()=>{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                })
             })
         }
     },
