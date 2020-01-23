@@ -7,7 +7,7 @@
     </b-card-text>
     <!-- modal -->
     <b-modal
-    :ref="prog.id + 'e'"
+    ref="mod"
     :id="prog.id"
     :title="titl"
     hide-footer>
@@ -54,27 +54,31 @@ export default {
     del: function () {
       db.collection('task').doc(this.prog.id).delete()
         .then((data) => {
-          this.$refs[this.prog.id + 'e'].hide()
+          this.$refs['mod'].hide()
         })
     },
     todo: function () {
       db.collection('task').doc(this.prog.id).update({ status: 'To-Do' })
         .then((data) => {
+          this.$refs['mod'].hide()
         })
     },
     doing: function () {
       db.collection('task').doc(this.prog.id).update({ status: 'Doing' })
         .then((data) => {
+          this.$refs['mod'].hide()
         })
     },
     done: function () {
       db.collection('task').doc(this.prog.id).update({ status: 'Done' })
         .then((data) => {
+          this.$refs['mod'].hide()
         })
     },
     backlog: function () {
       db.collection('task').doc(this.prog.id).update({ status: 'Back-Log' })
         .then((data) => {
+          this.$refs['mod'].hide()
         })
     }
   }
