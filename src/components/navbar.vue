@@ -31,8 +31,8 @@
                         </div>
                     </li>                
                 </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline" @submit.prevent="search">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" v-model="searchStr" @keyup="search">
                 </form>
                 <button class="btn btn-outline-success my-2 my-sm-0 addtask-btn"  data-toggle="modal" data-target="#addTaskModal">New task</button>
 
@@ -84,15 +84,16 @@
                 name: "",
                 description: "",
                 due_date: null,
-                priority: 0
+                priority: 0,
+                searchStr: ""
             }
         },
         methods: {
             toggleColumn(columnId) {
                 this.$emit('toggleShowColumn',columnId);
             },
-            search(str) {
-                str;
+            search() {
+                this.$emit('search',this.searchStr);
             },
             addTask() {
                 if(this.name.length != 0)

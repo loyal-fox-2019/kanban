@@ -21,24 +21,50 @@
         data() {
             return {
                 tasks: [],
-                loading: true
+                loading: true,
+                unsubscribe: null
             }
         },
         created() {
-            db.collection("tasks")
-            .where("category","==",this.categoryName)
-            //.orderBy("created_date")
-            .onSnapshot((querySnapshot) => {
-                this.tasks = [];
-                querySnapshot.forEach((doc) => {
-                    let t = {
-                        id: doc.id,
-                        data: doc.data()
-                    }
-                    this.tasks.push(t);
+            this.unsubscribe = this.getTasks();
+        },
+        methods: {
+            getTasks() {
+                return db.collection("tasks")
+                .where("category","==",this.categoryName)
+                //.orderBy("created_date")
+                .onSnapshot((querySnapshot) => {
+                    this.tasks = [];
+                    querySnapshot.forEach((doc) => {
+                        let t = {
+                            id: doc.id,
+                            data: doc.data()
+                        }
+
+                        if(this.searchStr != "") {
+                            if(RegExp('\\b'+this.searchStr,'gi').test(t.data.name) || RegExp('\\b'+this.searchStr,'gi').test(t.data.description))
+                            {
+                                this.tasks.push(t);
+                            }
+                        }
+                        else
+                        {
+                            this.tasks.push(t);
+                        }
+                        
+                        
+                    });
+                    this.loading = false;
                 });
-                this.loading = false;
-            });
+            }
+        },
+        watch: {
+            searchStr: {
+                handler() {
+                    this.unsubscribe();
+                    this.unsubscribe = this.getTasks();
+                }
+            }
         },
         components: {
             taskcard

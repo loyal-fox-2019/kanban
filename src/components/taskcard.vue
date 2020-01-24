@@ -4,7 +4,7 @@
         <div class="card-header"><h5 class="card-title">{{task.data.name}}</h5></div>
         <div class="card-body" :class="cardclass">            
             <p class="card-text">{{task.data.description || 'no description'}}</p>
-            <p class="card-text"><b>Due date:</b> {{task.data.due_date ? task.data.due_date.toDate() : "n/a"}}</p>
+            <p class="card-text"><b>Due date:</b> {{task.data.due_date ? task.data.due_date.toDate().toDateString() : "n/a"}}</p>
             <p class="card-text"><b>Priority:</b> {{task.data.priority}}</p>
             <button type="button" class="btn btn-primary to-left" @click="moveLeft" v-if="task.data.category!='backlog'"><span class="fas fa-arrow-left"></span></button>
             <button type="button" class="btn btn-primary to-right" @click="moveRight" v-if="task.data.category!='done'"><span class="fas fa-arrow-right"></span></button>
@@ -159,6 +159,10 @@
     border: 2px solid darkblue;
 }
 .card-body.bg-danger {
-    background-image: url("../../public/Fire3D.gif")
+    background-image: url("../../public/Fire3D.gif");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    color: black;
 }
 </style>

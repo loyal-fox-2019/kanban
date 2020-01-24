@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar @toggleShowColumn="toggleShowColumn"></navbar>
+    <navbar @toggleShowColumn="toggleShowColumn" @search="search"></navbar>
     <div class="columns">
       <column id="backlog" :categoryName="'backlog'" :searchStr="searchStr" v-if="showTask.backlog"></column>
       <column id="todo" :categoryName="'todo'" :searchStr="searchStr" v-if="showTask.todo"></column>
@@ -34,6 +34,9 @@ export default {
   methods: {
     toggleShowColumn(columnId) {
       this.showTask[columnId] = !this.showTask[columnId];
+    },
+    search(str) {
+      this.searchStr = str;
     }
   }
 }
