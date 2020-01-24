@@ -58,7 +58,7 @@
                             <input class="form-control" type="number" min="0" max="100" v-model="priority" required>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closemodal">Close</button>
                             <button type="submit" class="btn btn-primary">Add</button>
                         </div>
                     </form>
@@ -73,6 +73,8 @@
 </template>
 
 <script>
+    import JQuery from 'jquery';
+    const $ = JQuery;
     import db from "../config/firebase.js";
     import firebase from "firebase";
     export default {
@@ -109,11 +111,11 @@
                     }
                     db.collection('tasks').add(taskObj)
                     .then(() => {
+                        $('#closemodal').click()
                         this.name = "";
                         this.description = "";
                         this.due_date = null;
                         this.priority = 0;
-                        document.getElementById("addTaskModal").modal('hide');
                     })
                     
                     

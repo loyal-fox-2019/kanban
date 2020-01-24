@@ -8,7 +8,24 @@
             <p class="card-text"><b>Priority:</b> {{task.data.priority}}</p>
             <button type="button" class="btn btn-primary to-left" @click="moveLeft" v-if="task.data.category!='backlog'"><span class="fas fa-arrow-left"></span></button>
             <button type="button" class="btn btn-primary to-right" @click="moveRight" v-if="task.data.category!='done'"><span class="fas fa-arrow-right"></span></button>
-            <button type="button" class="btn btn-danger trash" @click="deleteTask"><span class="fas fa-trash"></span></button>
+
+            <!-- Delete -->                
+            <b-button type="button" class="btn btn-danger trash" :id="'popoverdeletebtn'+task.id" @click="openDeletePopover"><span class="fas fa-trash"></span></b-button>
+            <b-popover :target="'popoverdeletebtn'+task.id" triggers="click" :show="popoverShow" placement="auto">
+            <template v-slot:title>
+                <b-button @click="onCloseDeletePopover" class="close" aria-label="Close" ref="button">
+                <span class="d-inline-block" aria-hidden="true">&times;</span>
+                </b-button>
+                Are you sure?
+            </template>
+
+            <div>
+                <b-button @click="onCloseDeletePopover" size="sm">Cancel</b-button>
+                <b-button @click="onOkDeletePopover" size="sm" variant="primary">Ok</b-button>
+            </div>
+            </b-popover>
+                
+            
         </div>
         </div>
     </div>
@@ -20,6 +37,11 @@
         name: "taskcard",
         props: {
             task: Object
+        },
+        data() {
+            return {
+                popoverShow: false
+            }
         },
         computed: {
             cardclass() {
@@ -96,12 +118,21 @@
                 db.collection('tasks').doc(this.task.id)
                 .delete()
                 .then(() => {
-
+                    this.popoverShow = false
                 })
                 .catch(() => {
-
+                    this.popoverShow = false
                 });
-            }
+            },
+            onCloseDeletePopover() {
+                this.popoverShow = false;
+            },
+            onOkDeletePopover() {
+                this.deleteTask();
+            },
+            openDeletePopover() {
+                this.popoverShow = true;
+            },
         }
     }
 </script>
