@@ -1,6 +1,6 @@
 <template>
   <v-col class="text-center">
-    <v-card class="mx-auto" max-width="344" outlined>
+    <v-card class="mx-auto kanban-card" max-width="344" outlined :style="`background-color: ${color}`">
       <v-list-item three-line>
         <v-list-item-content>
           <v-list-item-title class="headline mb-1">{{listname}}</v-list-item-title>
@@ -25,11 +25,14 @@ export default {
   },
   props: {
     listname: String,
-    tasks: Array
+    tasks: Array,
+    color: String
   }
 }
 </script>
 
-<style>
-
+<style scoped>
+  /* .kanban-card {
+    background-color: red
+  } */
 </style>

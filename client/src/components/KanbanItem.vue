@@ -2,8 +2,10 @@
   <v-card class="mx-auto" max-width="344" outlined>
     <v-list-item three-line>
       <v-list-item-content>
-        <v-list-item-subtitle>{{task.title}}</v-list-item-subtitle>
-        <v-list-item-subtitle>{{task.desc}}</v-list-item-subtitle>
+        <v-list-item-subtitle class="title">{{task.title}}</v-list-item-subtitle>
+        <v-list-item-subtitle class="body-2"><v-icon>person</v-icon>: {{task.assigned}}</v-list-item-subtitle>
+        <v-list-item-subtitle class="body-2"><v-icon>mdi-currency-usd</v-icon>: {{task.point}}</v-list-item-subtitle>
+        <p class="body-1">{{task.desc}}</p>
       </v-list-item-content>
     </v-list-item>
     <v-card-actions class="text-center">

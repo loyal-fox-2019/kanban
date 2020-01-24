@@ -1,46 +1,41 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
-      <!-- <v-list dense>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-contact-mail</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Contact</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list> -->
-      <!-- <v-content> -->
+    <v-navigation-drawer v-model="drawer" app width=300 class="text-center">
       <div class="mt-3">
         <h2>Add task?</h2>
-      <v-form @submit.prevent="add" class="my-auto">
+      <v-form @submit.prevent="add" class="my-3">
         <v-text-field
           label="Task Title"
           name="title"
-          prepend-icon="person"
+          prepend-icon="mdi-clipboard-check"
           type="text"
+          required
           v-model="title"
+        />
+        <v-text-field
+          label="Asiigned to"
+          name="desc"
+          prepend-icon="mdi-account-plus"
+          type="text"
+          v-model="assigned"
         />
         <v-text-field
           label="Task Description"
           name="desc"
-          prepend-icon="person"
+          prepend-icon="mdi-pencil-plus"
           type="text"
           v-model="desc"
         />
-        <v-btn rounded color="primary" @click="add" dark>Add Task</v-btn>
+        <v-text-field
+          label="Point"
+          name="desc"
+          prepend-icon="mdi-currency-usd"
+          type="number"
+          v-model="point"
+        />
+        <v-btn rounded class="m-2" color="primary" @click="add" dark>Add Task</v-btn>
       </v-form>
       </div>
-    <!-- </v-content> -->
     </v-navigation-drawer>
 
     <v-app-bar app color="indigo" dark>
@@ -50,24 +45,15 @@
     </v-app-bar>
 
     <v-content>
-      <v-container class="fill-height" fluid>
-        <v-row align="center" justify="center">
-          <kanban-list :listname="'BACKLOG'" :tasks="kanban.backlogs"/>
-          <kanban-list :listname="'TODO'" :tasks="kanban.todos"/>
-          <kanban-list :listname="'DOING'" :tasks="kanban.doings"/>
-          <kanban-list :listname="'DONE'" :tasks="kanban.dones"/>
-          <!-- <v-col class="text-center">todo</v-col>
-          <v-col class="text-center">doing</v-col>
-          <v-col class="text-center">done</v-col> -->
+      <v-container>
+        <v-row align="top" justify="center">
+          <kanban-list :color="'#B2DFDB'" :listname="'BACKLOG'" :tasks="kanban.backlogs"/>
+          <kanban-list :color="'#B2EBF2'" :listname="'TODO'" :tasks="kanban.todos"/>
+          <kanban-list :color="'#80DEEA'" :listname="'DOING'" :tasks="kanban.doings"/>
+          <kanban-list :color="'#AED581'" :listname="'DONE'" :tasks="kanban.dones"/>
         </v-row>
       </v-container>
     </v-content>
-    <!-- <v-footer
-      color="indigo"
-      app
-    >
-      <span class="white--text">&copy; 2019</span>
-    </v-footer>-->
   </v-app>
 </template>
 
@@ -82,6 +68,8 @@ export default {
     KanbanList
   },
   data: () => ({
+    point: 100,
+    assigned: '',
     title: '',
     desc: '',
     drawer: null,
@@ -96,9 +84,6 @@ export default {
   methods: {
     logout () {
       firebase.auth().signOut()
-      // .then(() => {
-      //   this.$router.push('/login')
-      // })
     },
     add () {
       let db = firebase.firestore()
@@ -106,6 +91,8 @@ export default {
         .add({
           title: this.title,
           desc: this.desc,
+          assigned: this.assigned,
+          point: this.point,
           status: 'backlog'
         })
         .then(() => {
