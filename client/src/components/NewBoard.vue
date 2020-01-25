@@ -88,7 +88,20 @@
 </template>
 
 <script>
-const db = require('@/config/firebaseConfig.js');
+import Swal from 'sweetalert2';
+import db from '@/config/firebaseConfig';
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-start',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
 
 export default {
   data() {
@@ -112,10 +125,18 @@ export default {
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           this.$bvModal.hide('new-task-modal');
+          Toast.fire({
+            icon: 'success',
+            title: 'Board successfully saved',
+          });
         })
         .catch((error) => {
           console.error('Error adding document: ', error);
           this.$bvModal.hide('new-task-modal');
+          Toast.fire({
+            icon: 'error',
+            title: 'Oops.. Something went wrong!',
+          });
         });
     },
     onReset(evt) {

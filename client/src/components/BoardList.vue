@@ -1,10 +1,8 @@
 <template>
-  <b-card
-    :border-variant="variant"
-    :header="data.title"
-    align="right"
-    class="my-2 font-weight-light"
-  >
+  <b-card :border-variant="variant" align="right" class="my-2 font-weight-light">
+    <template v-slot:header>
+      <h6 class="mb-0 font-weight-bold" style="font-size:50px;">{{ data.title }}</h6>
+    </template>
     <b-card-text class="text-right">
       <div class="d-flex justify-content-between">
         <span class="font-weight-bold">Description:</span>
@@ -19,35 +17,25 @@
         <span>{{ data.assignedTo }}</span>
       </div>
       <div class="text-center">
-        <b-dropdown
-          variant="link"
-          size="sm"
-          toggle-class="text-decoration-none"
-          no-caret
-        >
+        <b-dropdown variant="link" size="sm" toggle-class="text-decoration-none" no-caret>
           <template v-slot:button-content>
             <b-icon icon="three-dots"></b-icon>
           </template>
-          <b-dropdown-item-button style="font-size:12px;">
-            Show Detail
-          </b-dropdown-item-button>
+          <b-dropdown-item-button
+            style="font-size:12px;"
+            @click.prevent="showDetailModal"
+          >Show Detail</b-dropdown-item-button>
           <b-dropdown-group id="dropdown-group-1" header="Move To">
             <b-dropdown-item-button
               v-for="status in statusList"
               :key="status"
               style="font-size:12px;"
               @click.prevent="changeStatus(status)"
-            >
-              {{ status }}
-            </b-dropdown-item-button>
+            >{{ status }}</b-dropdown-item-button>
           </b-dropdown-group>
           <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item-button
-            style="font-size:12px;"
-            @click.prevent="deleteTodo"
-            class="mt-3"
-          >
-          <p class="text-danger font-weight-bold"> Delete </p>
+          <b-dropdown-item-button style="font-size:12px;" @click.prevent="deleteTodo" class="mt-3">
+            <p class="text-danger font-weight-bold">Delete</p>
           </b-dropdown-item-button>
         </b-dropdown>
       </div>
@@ -56,7 +44,20 @@
 </template>
 
 <script>
-const db = require('../config/firebaseConfig.js');
+import Swal from 'sweetalert2';
+import db from '@/config/firebaseConfig';
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-start',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  onOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer);
+    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  },
+});
 
 export default {
   props: ['data', 'variant'],
@@ -73,26 +74,50 @@ export default {
       const docRef = db.collection('todos').doc(this.data.id);
       db.runTransaction(transaction => transaction.get(docRef).then((sfDoc) => {
         if (!sfDoc.exists) {
-          console.log('Document does not exist!');
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Document does not exist!',
+          });
         }
 
         transaction.update(docRef, { status: newStatus });
       }))
         .then(() => {
-          console.log('Transaction successfully committed!');
+          Toast.fire({
+            icon: 'success',
+            title: 'Transaction successfully committed!',
+          });
         })
         .catch((error) => {
-          console.log('Transaction failed: ', error);
+          console.log(error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          });
         });
     },
+    showDetailModal() {
+      this.$emit('showBoardModal', this.data);
+    },
     deleteTodo() {
-      db.collection('todos').doc(this.data.id)
+      db.collection('todos')
+        .doc(this.data.id)
         .delete()
         .then(() => {
-          console.log('Document successfully deleted!');
+          Toast.fire({
+            icon: 'success',
+            title: 'Successfully delete board',
+          });
         })
         .catch((error) => {
           console.error('Error removing document: ', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          });
         });
     },
   },
