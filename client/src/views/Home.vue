@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <top-navbar></top-navbar>
-    <status-board></status-board>
-    <board-modal :data="showDataModal"></board-modal>
+    <status-board @showModal="modalShown($event)"></status-board>
+    <board-modal :data="dataModal"></board-modal>
   </div>
 </template>
 
@@ -15,12 +15,17 @@ export default {
   name: 'home',
   data() {
     return {
-      showDataModal: null,
+      dataModal: {
+        title: null,
+        description: null,
+        point: null,
+        assignedTo: null,
+      },
     };
   },
   methods: {
-    updateShowModal(data) {
-      this.showDataModal = data;
+    modalShown(data) {
+      this.dataModal = data;
     },
   },
   components: {

@@ -1,7 +1,7 @@
 <template>
   <b-card :border-variant="variant" align="right" class="my-2 font-weight-light">
     <template v-slot:header>
-      <h6 class="mb-0 font-weight-bold" style="font-size:50px;">{{ data.title }}</h6>
+      <h6 class="mb-0 font-weight-bold" style="font-size:40px;">{{ data.title }}</h6>
     </template>
     <b-card-text class="text-right">
       <div class="d-flex justify-content-between">
@@ -34,7 +34,11 @@
             >{{ status }}</b-dropdown-item-button>
           </b-dropdown-group>
           <b-dropdown-divider></b-dropdown-divider>
-          <b-dropdown-item-button style="font-size:12px;" @click.prevent="deleteTodo" class="mt-3">
+          <b-dropdown-item-button
+            style="font-size:12px;"
+            @click.prevent="confirmDelete"
+            class="mt-3"
+          >
             <p class="text-danger font-weight-bold">Delete</p>
           </b-dropdown-item-button>
         </b-dropdown>
@@ -57,6 +61,13 @@ const Toast = Swal.mixin({
     toast.addEventListener('mouseenter', Swal.stopTimer);
     toast.addEventListener('mouseleave', Swal.resumeTimer);
   },
+});
+const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-success',
+    cancelButton: 'btn btn-danger',
+  },
+  buttonsStyling: false,
 });
 
 export default {
@@ -119,6 +130,30 @@ export default {
             text: 'Something went wrong!',
           });
         });
+    },
+    confirmDelete() {
+      swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        text: 'This action cannot be undone!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.value) {
+          this.deleteTodo();
+        } else if (
+        /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            'Cancelled',
+            'Your board is safe in our place',
+            'error',
+          );
+        }
+      });
     },
   },
   created() {

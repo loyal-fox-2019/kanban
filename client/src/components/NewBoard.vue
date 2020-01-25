@@ -123,6 +123,7 @@ export default {
       db.collection('todos')
         .add(this.form)
         .then((docRef) => {
+          /* eslint-disable-next-line */
           console.log('Document written with ID: ', docRef.id);
           this.$bvModal.hide('new-task-modal');
           Toast.fire({
@@ -131,6 +132,7 @@ export default {
           });
         })
         .catch((error) => {
+          /* eslint-disable-next-line */
           console.error('Error adding document: ', error);
           this.$bvModal.hide('new-task-modal');
           Toast.fire({

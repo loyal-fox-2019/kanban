@@ -15,6 +15,7 @@
             :key="todo.title"
             :data="todo"
             :variant="status.headerVariant"
+            @showBoardModal="showDetailModal($event)"
           ></board-list>
         </draggable>
       </b-card>
