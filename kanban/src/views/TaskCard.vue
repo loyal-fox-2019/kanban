@@ -1,17 +1,23 @@
 <template>
    <div class="card shadow">
         <div class="card-body">
-            <h4 class="card-title">{{title}}</h4>
-            <p class="card-text">{{description}}</p>
-            <p class="card-text">Point : {{point}}</p>
-            <p class="card-text">Assigned to : {{assigned_to}}</p>
+            <h4 class="card-title">{{task.title}}</h4>
+            <p class="card-text">{{task.description}}</p>
+            <p class="card-text">Point : {{task.point}}</p>
+            <p class="card-text">Assigned to : {{task.assigned_to}}</p>
         </div>
         <div class="card-body">
             <div class="row">
-                <button @click="undateTask({title,description,point,id,assigned_to,status})" class="btn btn-dark m-2">Move Back</button>
-                <button @click="updateTask({title,description,point,id,assigned_to,status})" class="btn btn-dark m-2">Move Front</button>
+                <button @click="undateTask({
+                    title : task.title,
+                    description : task.description,
+                    point : task.point,
+                    id : task.id,
+                    assigned_to : task.assigned_to,
+                    status : task.status})" class="btn btn-dark m-2">Move Back</button>
+                <button @click="updateTask(task)" class="btn btn-dark m-2">Move Front</button>
             </div>
-            <button @click="deleteTask(id)" class="btn btn-dark m-2">Delete</button>
+            <button @click="deleteTask(task.id)" class="btn btn-dark m-2">Delete</button>
         </div>
     </div>
 </template>
@@ -25,7 +31,8 @@ export default {
         point : Number,
         assigned_to : String,
         id : String,
-        status : String
+        status : String,
+        task : Object
     },
     methods : {
         deleteTask(id){
@@ -47,7 +54,7 @@ export default {
                         assigned_to : payload.assigned_to,
                         status : "todo"
                         })
-                    .then(()=>console.log('berhasi delete'))
+                    .then(()=>console.log('berhasi pindah dari backlog ke todo'))
                     .catch(err=>console.log('error delete '+err))
                     break
                 case "todo": 

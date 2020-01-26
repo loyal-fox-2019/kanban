@@ -7,7 +7,7 @@
                     <div class="card border-black">
                         <div class="card-body">
                         <h4 class="card-title">Backlog</h4>
-                            <div v-for="task in backlog" :key=task class="mb-2">
+                            <div v-for="task in backlog" :key="task" class="mb-2">
                                 <TaskCard 
                                 :task="task">
                                 </TaskCard>
@@ -19,9 +19,9 @@
                     <div class="card border-black">
                         <div class="card-body">
                         <h4 class="card-title">Todo</h4>
-                            <div v-for="task in todo" :key=task class="mb-2">
-                                <TaskCard>
-                                :task="task"
+                            <div v-for="task in todo" :key="task" class="mb-2">
+                                <TaskCard
+                                :task="task">
                                 </TaskCard>
                             </div>
                         </div>
@@ -31,7 +31,7 @@
                     <div class="card border-black">
                         <div class="card-body">
                         <h4 class="card-title">Doing</h4>
-                            <div v-for="task in doing" :key=task class="mb-2">
+                            <div v-for="task in doing" :key="task" class="mb-2">
                                 <TaskCard 
                                 :task="task">
                                 </TaskCard>
@@ -43,7 +43,7 @@
                     <div class="card border-black">
                         <div class="card-body">
                         <h4 class="card-title">Done</h4>
-                            <div v-for="task in done" :key=task>
+                            <div v-for="task in done" :key="task">
                                 <TaskCard 
                                 :task="task">
                                 </TaskCard>
@@ -78,12 +78,12 @@ export default {
         console.log("tembak ke firebase..")
         db.collection("kanban").onSnapshot( docSnapshot => {
             console.log("data nya ini : ")
-            console.log(docSnapshot)
             this.backlog = []
             this.todo = []
             this.doing = []
             this.done = []
             docSnapshot.forEach(doc => {
+            console.log(doc.data())
                 let status = doc.data().status
                 let data = doc.data()
                 data.id = doc.id
