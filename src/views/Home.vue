@@ -10,7 +10,7 @@
           <!-- Right aligned nav items -->
           <b-navbar-nav class="ml-auto">
             <b-navbar-nav>
-              <b-button variant="outline-primary" v-b-modal.addTaskModal>New Task</b-button>
+              <b-button variant="outline-primary" v-b-modal.addTaskModal><i class="far fa-plus-square"></i> New Task</b-button>
               <b-modal id="addTaskModal" title="Add New Task" hide-footer size="lg">
                 <form @submit.prevent="addTask">
                   <div class="form-group">
@@ -63,10 +63,10 @@
       </b-navbar>
     </div>
     <div class="d-flex mt-5 pt-4">
-      <main-kanban-card card-title="Backlog" card-variant="danger" :taskList="kanbanList.backlog"></main-kanban-card>
-      <main-kanban-card card-title="Todo" card-variant="secondary" :taskList="kanbanList.todo"></main-kanban-card>
-      <main-kanban-card card-title="Doing" card-variant="primary" :taskList="kanbanList.doing"></main-kanban-card>
-      <main-kanban-card card-title="Done" card-variant="success" :taskList="kanbanList.done"></main-kanban-card>
+      <main-kanban-card card-title="Backlog" card-variant="danger" :taskList="kanbanList.backlog" icon-title-card="far fa-sticky-note"></main-kanban-card>
+      <main-kanban-card card-title="Todo" card-variant="secondary" :taskList="kanbanList.todo" icon-title-card="far fa-list-alt"></main-kanban-card>
+      <main-kanban-card card-title="Doing" card-variant="primary" :taskList="kanbanList.doing" icon-title-card="fas fa-wrench"></main-kanban-card>
+      <main-kanban-card card-title="Done" card-variant="success" :taskList="kanbanList.done" icon-title-card="far fa-check-square"></main-kanban-card>
     </div>
   </div>
 </template>

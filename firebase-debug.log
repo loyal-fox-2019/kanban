@@ -1,0 +1,54 @@
+[debug] [2020-01-27T00:22:54.522Z] ----------------------------------------------------------------------
+[debug] [2020-01-27T00:22:54.524Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2020-01-27T00:22:54.525Z] CLI Version:   7.12.1
+[debug] [2020-01-27T00:22:54.525Z] Platform:      linux
+[debug] [2020-01-27T00:22:54.525Z] Node Version:  v12.13.0
+[debug] [2020-01-27T00:22:54.525Z] Time:          Mon Jan 27 2020 07:22:54 GMT+0700 (Western Indonesia Time)
+[debug] [2020-01-27T00:22:54.525Z] ----------------------------------------------------------------------
+[debug] [2020-01-27T00:22:54.525Z] 
+[debug] [2020-01-27T00:22:54.532Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-01-27T00:22:54.532Z] > authorizing via signed-in user
+[debug] [2020-01-27T00:22:54.532Z] [iam] checking project porto-kanban for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-01-27T00:22:54.534Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/porto-kanban:testIamPermissions  
+
+[debug] [2020-01-27T00:22:56.068Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-27T00:22:56.071Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/porto-kanban  
+ 
+[debug] [2020-01-27T00:22:56.576Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'porto-kanban'...
+[info] 
+[info] i  deploying hosting
+[debug] [2020-01-27T00:22:56.582Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/porto-kanban/versions  
+
+[debug] [2020-01-27T00:22:58.929Z] <<< HTTP RESPONSE 200
+[info] i  hosting[porto-kanban]: beginning deploy...
+[info] i  hosting[porto-kanban]: found 24 files in dist
+[debug] [2020-01-27T00:23:00.202Z] [hosting] hash cache [ZGlzdA] stored for 24 files
+[debug] [2020-01-27T00:23:00.203Z] [hosting][hash queue][FINAL]
+[debug] [2020-01-27T00:23:00.203Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/porto-kanban/versions/aecb8f81f35f72ac:populateFiles  
+ <request body omitted>
+[debug] [2020-01-27T00:23:02.513Z] <<< HTTP RESPONSE 200
+[debug] [2020-01-27T00:23:02.517Z] [hosting][populate queue][FINAL]
+[debug] [2020-01-27T00:23:02.518Z] [hosting] uploads queued: 3
+[debug] [2020-01-27T00:23:06.593Z] [hosting][upload queue][FINAL]
+[info] ✔  hosting[porto-kanban]: file upload complete
+[debug] [2020-01-27T00:23:06.595Z] [hosting] deploy completed after 7664ms
+[debug] [2020-01-27T00:23:06.595Z] [
+  {
+    "config": {
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "porto-kanban"
+    },
+    "site": "porto-kanban",
+    "version": "sites/porto-kanban/versions/aecb8f81f35f72ac"
+  }
+]
+[info] i  hosting[porto-kanban]: finalizing version...
+[debug] [2020-01-27T00:23:06.596Z] >>> HTTP REQUEST PATCH https://firebasehosting.googleapis.com/v1beta1/sites/porto-kanban/versions/aecb8f81f35f72ac?updateMask=status  
+
