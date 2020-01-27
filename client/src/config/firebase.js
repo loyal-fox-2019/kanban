@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: 'portofolioproject',
   storageBucket: 'portofolioproject.appspot.com',
   messagingSenderId: '389858522728',
-  appId: '1:389858522728:web:2e5d807d6c591303fb2ddd',
-  measurementId: 'G-5G5E6CF2C6',
+  appId: '1:389858522728:web:d385b19063604aacfb2ddd',
+  measurementId: 'G-606SNM9S7Q',
 };
 
 firebase.initializeApp(firebaseConfig);

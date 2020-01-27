@@ -28,11 +28,13 @@ export default {
 };
 </script>
 <style scoped>
+@import url('https://fonts.googleapis.com/css?family=Hind+Siliguri&display=swap');
+
 img {
   height: 70px;;
 }
 .kanban {
-  font-family: 'Lilita One', cursive;
+  font-family: 'Hind Siliguri', sans-serif;
   font-size: 42px
 }
 </style>

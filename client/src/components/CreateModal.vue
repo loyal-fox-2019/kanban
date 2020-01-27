@@ -83,7 +83,6 @@ export default {
               icon: 'success',
               confirmButtonText: 'Ok',
             });
-            console.log('masuk')
             this.$bvModal.hide('bv-modal-example');
             this.onReset();
           })
@@ -103,13 +102,14 @@ export default {
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Patrick+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Hind+Siliguri&display=swap');
 
 .btn {
   width: 170px !important;
   height: 50px !important;
   font-size: 20px !important;
   color: white !important;
-  font-family: 'Lilita One', cursive;
+  font-family: 'Hind Siliguri', sans-serif;
 }
 .btn:hover {
   background-color: #127887 !important;
