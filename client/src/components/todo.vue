@@ -11,7 +11,7 @@
             <b-button v-b-modal.modal-center id="show-btn" @click="$bvModal.show(`${oneTodo.status} ${id}`)">Show Detail</b-button>
             <b-modal :id="`${oneTodo.status} ${id}`" centered title="BootstrapVue" hide-footer>
                 <template v-slot:modal-title>
-                    {{ oneTodo.title }}
+                    <h3>{{ oneTodo.title }}</h3>
                 </template>
                 <div class="d-block text-center">
                     <h6>Description</h6>
@@ -21,10 +21,10 @@
                     <h6>Assigned To</h6>
                     <p>{{ oneTodo.assigned }}</p>
                 </div>
-                <div>
-                    <b-button variant="warning" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="goBack(oneTodo)" v-show="oneTodo.status!=='backlog'">Back</b-button>
-                    <b-button variant="danger"  @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="deleteTodo(oneTodo)">Delete</b-button>
-                    <b-button variant="success" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="forward(oneTodo)" v-show="oneTodo.status!=='done'">Forward</b-button>
+                <div class="row justify-content-around">
+                    <b-button class="col-md-3" variant="warning" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="goBack(oneTodo)" v-show="oneTodo.status!=='backlog'">Back</b-button>
+                    <b-button class="col-md-3" variant="danger"  @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="deleteTodo(oneTodo)">Delete</b-button>
+                    <b-button class="col-md-3" variant="success" @click="$bvModal.hide(`${oneTodo.status} ${id}`)" v-on:click="forward(oneTodo)" v-show="oneTodo.status!=='done'">Forward</b-button>
                 </div>
             </b-modal>
         </div>

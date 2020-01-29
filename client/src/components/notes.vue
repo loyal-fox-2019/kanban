@@ -5,7 +5,7 @@
                 {{ cat }}
             </div>
             <div class="card-body">
-                <todo v-for="(todo, i) in data" :key="i" :id="i" :oneTodo="todo"></todo>
+                <todo v-for="(todo, i) in data" :key="i" :id="i" :oneTodo="todo" style="margin-top: 10px;"></todo>
             </div>
         </div>
   </div>

@@ -1,11 +1,13 @@
 <template>
     <div>
         <navbar></navbar>
-        <div class="row">
+        <div class="container">
+        <div class="row justify-content-center" style="margin-top: 3vh;">
             <notes class="col-md" :data="backlog" :cat="`Back Log`"></notes>
             <notes class="col-md" :data="todo" :cat="`To-Do`"></notes>
             <notes class="col-md" :data="doing" :cat="`Doing`"></notes>
             <notes class="col-md" :data="done"  :cat="`Done`"></notes>
+        </div>
         </div>
     </div>
 </template>

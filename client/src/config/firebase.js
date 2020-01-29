@@ -1,15 +1,16 @@
 const firebase = require('firebase');
 // Required for side-effects
 require("firebase/firestore");
+require("firebase/auth");
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIRESTORE,
-  authDomain: "kanban-7617d.firebaseapp.com",
-  databaseURL: "https://kanban-7617d.firebaseio.com",
-  projectId: "kanban-7617d",
-  storageBucket: "kanban-7617d.appspot.com",
+  authDomain: `${process.env.VUE_APP_PROJECT_ID}.firebaseapp.com`,
+  databaseURL: `https://${process.env.VUE_APP_PROJECT_ID}.firebaseio.com`,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket:  `${process.env.VUE_APP_PROJECT_ID}.appspot.com`,
   messagingSenderId: "596214031759",
-  appId: "1:596214031759:web:a753d9f41b7243c8eb97fa"
+  appId: process.env.VUE_APP_APPID
 };
 
 firebase.initializeApp(firebaseConfig)
