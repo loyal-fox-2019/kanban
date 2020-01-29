@@ -12,51 +12,28 @@
         A N B A N
       </a>
       <b-button v-b-modal.modal-prevent-closing class="btn btn-secondary btn-sm">Add Kanban</b-button>
-      <b-modal
-        id="modal-prevent-closing"
-        ref="modal"
-        title="Submit Your Kanban"
-        @show="resetModal"
-        @hidden="resetModal"
-        @ok="handleOk"
-      >
-        <form ref="form" @submit.stop.prevent="handleSubmit">
-          <b-form-group
-            :state="title"
-            label="Title"
-            label-for="titile-input"
-            invalid-feedback="Title is required"
-          >
-            <b-form-input id="title-input" v-model="title" :state="title" required></b-form-input>
+      <b-modal id="modal-prevent-closing" ref="modal" title="Submit Your Kanban" hide-footer>
+        <form ref="form" @submit.prevent="handleSubmit">
+          <b-form-group label="Title" label-for="titile-input" invalid-feedback="Title is required">
+            <b-form-input id="title-input" v-model="title" required></b-form-input>
           </b-form-group>
           <b-form-group
-            :state="description"
             label="Description"
             label-for="description-input"
             invalid-feedback="description is required"
           >
-            <b-form-input
-              id="description-input"
-              v-model="description"
-              :state="description"
-              required
-            ></b-form-input>
+            <b-form-input id="description-input" v-model="description" required></b-form-input>
+          </b-form-group>
+          <b-form-group label="Point" label-for="point-input" invalid-feedback="point is required">
+            <b-form-input id="point-input" v-model="point" required></b-form-input>
           </b-form-group>
           <b-form-group
-            :state="point"
-            label="Point"
-            label-for="point-input"
-            invalid-feedback="point is required"
-          >
-            <b-form-input id="point-input" v-model="point" :state="point" required></b-form-input>
-          </b-form-group>
-          <b-form-group
-            :state="assignedTo"
             label="Assigned To"
             label-for="assignedTo-input"
             invalid-feedback="assignedTo is required"
           >
-            <b-form-input id="assignedTo-input" v-model="assignedTo" :state="assignedTo" required></b-form-input>
+            <b-form-input id="assignedTo-input" v-model="assignedTo" required></b-form-input>
+            <button class="mt-3" type="submit" style="margin-left:400px">add</button>
           </b-form-group>
         </form>
       </b-modal>
@@ -65,6 +42,8 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
+import db from "../assets/config";
 export default {
   data() {
     return {
@@ -73,6 +52,34 @@ export default {
       point: "",
       assignedTo: ""
     };
+  },
+  methods: {
+    handleSubmit() {
+      db.collection("kanban")
+        .add({
+          title: this.title,
+          description: this.description,
+          point: this.point,
+          assignedTo: this.assignedTo,
+          status: "back-log",
+          createdAt: new Date()
+        })
+        .then(data => {
+          this.title = "";
+          this.description = "";
+          this.point = "";
+          this.assignedTo = "";
+          this.$bvModal.hide("modal-prevent-closing");
+          Swal.fire("Good job!", "add kanban", "success");
+        })
+        .catch(err => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: err
+          });
+        });
+    }
   }
 };
 </script>
