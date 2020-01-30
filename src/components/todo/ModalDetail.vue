@@ -18,7 +18,6 @@
                 @change="changeStatus"
                 v-model="status"
               >
-                <option selected>Choose...</option>
                 <option value="backLog">Back-log</option>
                 <option value="toDo">To-Do</option>
                 <option value="doing">Doing</option>
@@ -52,7 +51,7 @@ export default {
   methods: {
     changeStatus() {
       if (this.status !== this.todo.status) {
-        console.log(this.todo.id);
+        // console.log(this.todo.id);
         this.$modal.hide('modal-detail');
         const todoRef = db
           .collection('todoApp')
@@ -64,8 +63,8 @@ export default {
             status: this.status,
           })
           .then(() => {})
-          .catch((err) => {
-            console.log(err);
+          .catch(() => {
+            // console.log(err);
           });
       }
     },

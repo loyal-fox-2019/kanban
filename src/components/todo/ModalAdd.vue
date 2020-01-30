@@ -85,8 +85,8 @@ export default {
         .collection('todos')
         .add(this.form)
         .then(() => {})
-        .catch((err) => {
-          console.log(err);
+        .catch(() => {
+          // console.log(err);
         });
     },
   },
